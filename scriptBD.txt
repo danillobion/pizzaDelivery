@@ -1,0 +1,75 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2018-01-24 17:51
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: ADM
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `Projeto` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE IF NOT EXISTS `Projeto`.`Pizza` (
+  `sabores` VARCHAR(140) NOT NULL,
+  `Nome` VARCHAR(140) NOT NULL,
+  PRIMARY KEY (`Nome`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Projeto`.`Pedido` (
+  `idPedido` INT(11) NOT NULL,
+  `clientePedido` INT(11) NOT NULL,
+  `pizzaPedido` VARCHAR(140) NOT NULL,
+  PRIMARY KEY (`idPedido`),
+  INDEX `clientePedido_idx` (`clientePedido` ASC),
+  INDEX `pizzaPedido_idx` (`pizzaPedido` ASC),
+  CONSTRAINT `clientePedido`
+    FOREIGN KEY (`clientePedido`)
+    REFERENCES `Projeto`.`Usuario` (`cpf`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `pizzaPedido`
+    FOREIGN KEY (`pizzaPedido`)
+    REFERENCES `Projeto`.`Pizza` (`Nome`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Projeto`.`Contato` (
+  `usuarioContato` INT(11) NOT NULL,
+  `info` VARCHAR(140) NOT NULL,
+  PRIMARY KEY (`usuarioContato`),
+  CONSTRAINT `usuarioContato`
+    FOREIGN KEY (`usuarioContato`)
+    REFERENCES `Projeto`.`Usuario` (`cpf`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Projeto`.`Usuario` (
+  `cpf` INT(11) NOT NULL,
+  `login` VARCHAR(45) NOT NULL,
+  `senha` VARCHAR(45) NOT NULL,
+  `nascimento` VARCHAR(45) NULL DEFAULT NULL,
+  `isGerente` TINYINT(4) NULL DEFAULT NULL,
+  `saboresPreferidos` VARCHAR(140) NULL DEFAULT NULL,
+  PRIMARY KEY (`cpf`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Projeto`.`Sabores` (
+  `idSabores` INT(11) NOT NULL,
+  `nome` VARCHAR(140) NOT NULL,
+  `estoque` INT(11) NOT NULL,
+  PRIMARY KEY (`idSabores`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
